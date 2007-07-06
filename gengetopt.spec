@@ -1,14 +1,13 @@
 Summary: Tool to write command line option parsing code for C programs
 Name: gengetopt
-Version: 2.19.1
-Release: 3%{dist}
+Version: 2.20
+Release: 1%{dist}
 License: GPL
 Group: Development/Tools
 URL: http://www.gnu.org/software/gengetopt/
 Source0: ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 
 Patch0: %{name}-%{version}-from-debian.patch
-Patch1: %{name}-%{version}-man.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -27,7 +26,6 @@ the C library function getopt_long to perform the actual command line parsing.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %configure
@@ -40,9 +38,10 @@ make check
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 
+# To retain timestamps on files installed without any modification.
 make install DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p"
+
 rm -rf $RPM_BUILD_ROOT%{_infodir}/dir
 
 # Move /usr/share/doc/gengetopt/examples to RPM_BUILD_DIR.
@@ -77,6 +76,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Mon Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.20-1
+- Version bump to 2.20.
+
 * Mon Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.19.1-3
 - Added 'BuildRequires: ...' for check stanza.
 - Added a check stanza.
