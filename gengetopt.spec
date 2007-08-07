@@ -1,13 +1,11 @@
 Summary: Tool to write command line option parsing code for C programs
 Name: gengetopt
-Version: 2.20
-Release: 1%{dist}
-License: GPL
+Version: 2.21
+Release: 2%{dist}
+License: GPLv3+
 Group: Development/Tools
 URL: http://www.gnu.org/software/gengetopt/
 Source0: ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
-
-Patch0: %{name}-%{version}-from-debian.patch
 
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -15,7 +13,6 @@ Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: help2man
-BuildRequires: source-highlight
 BuildRequires: valgrind
 
 %description
@@ -25,13 +22,10 @@ the C library function getopt_long to perform the actual command line parsing.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %configure
-
-# Disabling parallel make to prevent failure with -j2.
-make
+make %{?_smp_mflags}
 
 %check
 make check
@@ -40,7 +34,7 @@ make check
 rm -rf $RPM_BUILD_ROOT
 
 # To retain timestamps on files installed without any modification.
-make install DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p"
+make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_infodir}/dir
 
@@ -48,9 +42,6 @@ rm -rf $RPM_BUILD_ROOT%{_infodir}/dir
 # To be later listed against %doc.
 mv $RPM_BUILD_ROOT%{_docdir}/%{name}/examples .
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
-
-# README.example
-mv ./doc/README.example ./examples
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -60,7 +51,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ $1 = 0 ]; then
-    /sbin/install-info --delete %{_infodir}/%{name}.info.gz %{_infodir}/dir >/dev/null 2>&1 || :
+  /sbin/install-info --delete %{_infodir}/%{name}.info.gz \
+    %{_infodir}/dir >/dev/null 2>&1 || :
 fi
 
 %files
@@ -76,6 +68,15 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Tue Aug 07 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-2
+- Removed 'BuildRequires: source-highlight' to prevent build failure.
+
+* Sat Aug 04 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-1
+- Version bump to 2.21. Closes Red Hat Bugzilla bug #250817.
+- License changed to GPLv3 or later.
+- Parallel build problems fixed by upstream.
+- README.example added by upstream.
+
 * Mon Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.20-1
 - Version bump to 2.20.
 
