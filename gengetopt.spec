@@ -1,7 +1,7 @@
 Summary: Tool to write command line option parsing code for C programs
 Name: gengetopt
 Version: 2.21
-Release: 1%{dist}
+Release: 2%{dist}
 License: GPLv3+
 Group: Development/Tools
 URL: http://www.gnu.org/software/gengetopt/
@@ -13,7 +13,6 @@ Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
 BuildRequires: help2man
-BuildRequires: source-highlight
 BuildRequires: valgrind
 
 %description
@@ -69,6 +68,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Tue Aug 07 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-2
+- Removed 'BuildRequires: source-highlight' to prevent build failure.
+
 * Sat Aug 04 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-1
 - Version bump to 2.21. Closes Red Hat Bugzilla bug #250817.
 - License changed to GPLv3 or later.
