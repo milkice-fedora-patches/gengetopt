@@ -1,7 +1,7 @@
 Summary: Tool to write command line option parsing code for C programs
 Name: gengetopt
 Version: 2.21
-Release: 2%{dist}
+Release: 3%{dist}
 License: GPLv3+
 Group: Development/Tools
 URL: http://www.gnu.org/software/gengetopt/
@@ -68,6 +68,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Wed Aug 22 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-3
+- Rebuilding.
+
 * Tue Aug 07 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-2
 - Removed 'BuildRequires: source-highlight' to prevent build failure.
 
