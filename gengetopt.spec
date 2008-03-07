@@ -1,19 +1,22 @@
-Summary: Tool to write command line option parsing code for C programs
-Name: gengetopt
-Version: 2.21
-Release: 2%{dist}
-License: GPLv3+
-Group: Development/Tools
-URL: http://www.gnu.org/software/gengetopt/
-Source0: ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
+Summary:	Tool to write command line option parsing code for C programs
+Name:		gengetopt
+Version:	2.22
+Release:	1%{dist}
+License:	GPLv3+
+Group:		Development/Tools
+URL:		http://www.gnu.org/software/gengetopt/
+Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Patch0:		%{name}-%{version}-gcc43.patch
 
-Requires(post): /sbin/install-info
+BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+Requires(post):	/sbin/install-info
 Requires(preun): /sbin/install-info
 
-BuildRequires: help2man
-BuildRequires: valgrind
+%ifarch %{ix86} x86_64 ppc ppc64
+BuildRequires:	valgrind
+%endif
 
 %description
 Gengetopt is a tool to generate C code to parse the command line arguments
@@ -22,21 +25,35 @@ the C library function getopt_long to perform the actual command line parsing.
 
 %prep
 %setup -q
+%patch0 -p1
+
+# Suppress rpmlint error.
+iconv --from-code ISO8859-1 --to-code UTF-8 ./ChangeLog \
+  --output ChangeLog.utf-8 && mv ChangeLog.utf-8 ./ChangeLog
+iconv --from-code ISO8859-1 --to-code UTF-8 ./THANKS \
+  --output THANKS.utf-8 && mv THANKS.utf-8 ./THANKS
 
 %build
 %configure
-make %{?_smp_mflags}
+
+# Parallel make does not work.
+make
 
 %check
 make check
 
+%ifarch %{ix86} x86_64 ppc ppc64
+pushd ./tests
+  make check-valgrind
+popd
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
-# To retain timestamps on files installed without any modification.
 make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_infodir}/dir
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 # Move /usr/share/doc/gengetopt/examples to RPM_BUILD_DIR.
 # To be later listed against %doc.
@@ -47,17 +64,26 @@ rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/install-info %{_infodir}/%{name}.info.gz %{_infodir}/dir || :
+/sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
 
 %preun
 if [ $1 = 0 ]; then
-  /sbin/install-info --delete %{_infodir}/%{name}.info.gz \
-    %{_infodir}/dir >/dev/null 2>&1 || :
+  /sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
 fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING LICENSE NEWS README THANKS TODO doc/gengetopt.html doc/index.html examples
+%doc AUTHORS
+%doc ChangeLog
+%doc COPYING
+%doc LICENSE
+%doc NEWS
+%doc README
+%doc THANKS
+%doc TODO
+%doc doc/index.html
+%doc doc/%{name}.html
+%doc examples
 %{_bindir}/%{name}
 %{_infodir}/%{name}.info.gz
 %{_mandir}/man1/%{name}.1.gz
@@ -68,6 +94,15 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Fri Mar 07 2008 Debarshi Ray <rishi@fedoraproject.org> - 2.22-1
+- Version bump to 2.22. Closes Red Hat Bugzilla bug #428641.
+- Fixed build failure with gcc-4.3.
+- Trimmed the 'BuildRequires' list.
+- Changed character encodings from ISO8859-1 to UTF-8.
+- Disabled parallel make to prevent failure with -j2.
+- Added 'make check-valgrind' for ix86, x86_64, ppc and ppc64 in check stanza.
+- Fixed Texinfo scriptlets according to Fedora packaging guidelines.
+
 * Tue Aug 07 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-2
 - Removed 'BuildRequires: source-highlight' to prevent build failure.
 
