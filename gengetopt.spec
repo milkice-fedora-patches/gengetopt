@@ -1,13 +1,11 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
-Version:	2.22
+Version:	2.22.1
 Release:	1%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
 Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
-
-Patch0:		%{name}-%{version}-gcc43.patch
 
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -25,7 +23,6 @@ the C library function getopt_long to perform the actual command line parsing.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # Suppress rpmlint error.
 iconv --from-code ISO8859-1 --to-code UTF-8 ./ChangeLog \
@@ -35,9 +32,7 @@ iconv --from-code ISO8859-1 --to-code UTF-8 ./THANKS \
 
 %build
 %configure
-
-# Parallel make does not work.
-make
+make %{?_smp_mflags}
 
 %check
 make check
@@ -94,6 +89,10 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Mon Jun 02 2008 Debarshi Ray <rishi@fedoraproject.org> - 2.22.1-1
+- Version bump to 2.22.1. Closes Red Hat Bugzilla bug #444335.
+- Parallel build problems fixed by upstream.
+
 * Fri Mar 07 2008 Debarshi Ray <rishi@fedoraproject.org> - 2.22-1
 - Version bump to 2.22. Closes Red Hat Bugzilla bug #428641.
 - Fixed build failure with gcc-4.3.
