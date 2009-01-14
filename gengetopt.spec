@@ -9,8 +9,8 @@ Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-Requires(post):	/sbin/install-info
-Requires(preun): /sbin/install-info
+Requires(post):	info
+Requires(preun): info
 
 %ifarch %{ix86} x86_64 ppc ppc64
 BuildRequires:	valgrind
@@ -79,9 +79,9 @@ fi
 %doc doc/index.html
 %doc doc/%{name}.html
 %doc examples
+%doc %{_infodir}/%{name}.info*
+%doc %{_mandir}/man1/%{name}.1*
 %{_bindir}/%{name}
-%{_infodir}/%{name}.info.gz
-%{_mandir}/man1/%{name}.1.gz
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/getopt.c
