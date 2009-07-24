@@ -1,7 +1,7 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
 Version:	2.22.1
-Release:	2%{dist}
+Release:	3%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
@@ -89,6 +89,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
