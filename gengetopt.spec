@@ -1,7 +1,7 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
-Version:	2.22.1
-Release:	3%{dist}
+Version:	2.22.3
+Release:	1%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
@@ -25,13 +25,26 @@ the C library function getopt_long to perform the actual command line parsing.
 %setup -q
 
 # Suppress rpmlint error.
-iconv --from-code ISO8859-1 --to-code UTF-8 ./ChangeLog \
-  --output ChangeLog.utf-8 && mv ChangeLog.utf-8 ./ChangeLog
-iconv --from-code ISO8859-1 --to-code UTF-8 ./THANKS \
-  --output THANKS.utf-8 && mv THANKS.utf-8 ./THANKS
+chmod 644 ./AUTHORS
+chmod 644 ./ChangeLog
+chmod 644 ./COPYING
+chmod 644 ./LICENSE
+chmod 644 ./NEWS
+chmod 644 ./README
+chmod 644 ./THANKS
+chmod 644 ./TODO
+chmod 644 ./doc/README.example
+chmod 644 ./doc/index.html
+chmod 644 ./src/parser.yy
+chmod 644 ./src/scanner.ll
+chmod 644 `find . -name "*.c" -perm /111 -print`
+chmod 644 `find . -name "*.cc" -perm /111 -print`
+chmod 644 `find . -name "*.cpp" -perm /111 -print`
+chmod 644 `find . -name "*.h" -perm /111 -print`
+chmod 644 `find . -name "*.ggo" -perm /111 -print`
 
 %build
-%configure
+%configure --docdir=%{_docdir}/%{name}-%{version}
 make %{?_smp_mflags}
 
 %check
@@ -50,10 +63,12 @@ make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
-# Move /usr/share/doc/gengetopt/examples to RPM_BUILD_DIR.
-# To be later listed against %doc.
-mv $RPM_BUILD_ROOT%{_docdir}/%{name}/examples .
-rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
+mkdir ./examples
+pushd ./doc
+  cp -p README.example ../examples
+  cp -p main1.cc sample1.ggo ../examples
+  cp -p main2.c sample2.ggo ../examples
+popd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -89,18 +104,38 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
-* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+* Wed Nov 04 2009 Debarshi Ray <rishi@fedoraproject.org> - 2.22.3-1
+- Version bump to 2.22.3. (Red Hat Bugzilla #512414)
+  * enum option values can contain + and -.
+  * Fixed compilation problems due to macro FIX_UNUSED which was not in the
+    right place.
+  * New command line switches --header-output-dir and --src_output-dir to
+    store cmdline.h separately from cmdline.c.
+  * Use #include <getopt.h> in the generated files, instead of "getopt.h".
+  * Generated functions use prototypes with char ** instead of char *const *.
+  * Removed compilation warnings for generated files.
+  * Fixed a compilation problem for files generated with --include-getopt
+    with some versions of stdlib.h.
+  * Use PACKAGE_NAME, if defined, for printing help and version.
+- Encoding of ChangeLog and THANKS fixed by upstream.
+- Removed spurious executable permissions from a bunch of files.
 
-* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+* Fri Jul 24 2009 Release Engineering <rel-eng@fedoraproject.org> - 2.22.1-3
+- Autorebuild for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
+* Tue Feb 24 2009 Release Engineering <rel-eng@fedoraproject.org> - 2.22.1-2
+- Autorebuild for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
 * Mon Jun 02 2008 Debarshi Ray <rishi@fedoraproject.org> - 2.22.1-1
-- Version bump to 2.22.1. Closes Red Hat Bugzilla bug #444335.
+- Version bump to 2.22.1. (Red Hat Bugzilla #444335)
+  * Removed compilation warnings for generated files.
+  * Fixed a bug with --long-help and enum options.
+  * The outputs of --help and output of --show-help correspond with each other.
+  * Fixed a compilation problem in generated output with mode options.
 - Parallel build problems fixed by upstream.
 
 * Fri Mar 07 2008 Debarshi Ray <rishi@fedoraproject.org> - 2.22-1
-- Version bump to 2.22. Closes Red Hat Bugzilla bug #428641.
+- Version bump to 2.22. (Red Hat Bugzilla #428641)
 - Fixed build failure with gcc-4.3.
 - Trimmed the 'BuildRequires' list.
 - Changed character encodings from ISO8859-1 to UTF-8.
@@ -112,7 +147,7 @@ fi
 - Removed 'BuildRequires: source-highlight' to prevent build failure.
 
 * Sat Aug 04 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.21-1
-- Version bump to 2.21. Closes Red Hat Bugzilla bug #250817.
+- Version bump to 2.21. (Red Hat Bugzilla #250817)
 - License changed to GPLv3 or later.
 - Parallel build problems fixed by upstream.
 - README.example added by upstream.
