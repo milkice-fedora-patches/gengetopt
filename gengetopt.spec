@@ -1,7 +1,7 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
 Version:	2.22.3
-Release:	1%{dist}
+Release:	2%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
@@ -104,6 +104,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Wed Nov 04 2009 Debarshi Ray <rishi@fedoraproject.org> - 2.22.3-1
 - Version bump to 2.22.3. (Red Hat Bugzilla #512414)
   * enum option values can contain + and -.
