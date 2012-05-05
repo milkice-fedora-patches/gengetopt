@@ -43,19 +43,10 @@ find . -name '*.ggo' -exec chmod 644 {} ';'
 
 %build
 %configure --docdir=%{_docdir}/%{name}-%{version}
-make %{?_smp_mflags}
 
-%check
-make check
-
-%ifarch %{ix86} x86_64 ppc ppc64 %{arm}
-pushd ./tests
-  make check-valgrind
-popd
-%endif
+make
 
 %install
-
 make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
@@ -66,6 +57,9 @@ pushd ./doc
   cp -p main1.cc sample1.ggo ../examples
   cp -p main2.c sample2.ggo ../examples
 popd
+
+%check
+make check
 
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
