@@ -1,18 +1,16 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
-Version:	2.22.3
-Release:	4%{dist}
+Version:	2.22.5
+Release:	1%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
 Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-
 Requires(post):	info
 Requires(preun): info
 
-%ifarch %{ix86} x86_64 ppc ppc64
+%ifarch %{ix86} x86_64 ppc ppc64 %{arm}
 BuildRequires:	valgrind
 %endif
 
@@ -50,14 +48,13 @@ make %{?_smp_mflags}
 %check
 make check
 
-%ifarch %{ix86} x86_64 ppc ppc64
+%ifarch %{ix86} x86_64 ppc ppc64 %{arm}
 pushd ./tests
   make check-valgrind
 popd
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
 
 make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 
@@ -70,9 +67,6 @@ pushd ./doc
   cp -p main2.c sample2.ggo ../examples
 popd
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
 
@@ -83,14 +77,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS
-%doc ChangeLog
-%doc COPYING
-%doc LICENSE
-%doc NEWS
-%doc README
-%doc THANKS
-%doc TODO
+%doc AUTHORS ChangeLog COPYING LICENSE NEWS README THANKS TODO
 %doc doc/index.html
 %doc doc/%{name}.html
 %doc examples
@@ -104,6 +91,10 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Sat May  5 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.22.5-1
+- Update to 2.22.5-1 to fix FTBFS
+- valgrind supported on ARM too
+
 * Tue Feb 28 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.3-4
 - Rebuilt for c++ ABI breakage
 
