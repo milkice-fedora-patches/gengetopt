@@ -35,11 +35,11 @@ chmod 644 ./doc/README.example
 chmod 644 ./doc/index.html
 chmod 644 ./src/parser.yy
 chmod 644 ./src/scanner.ll
-chmod 644 `find . -name "*.c" -perm /111 -print`
-chmod 644 `find . -name "*.cc" -perm /111 -print`
-chmod 644 `find . -name "*.cpp" -perm /111 -print`
-chmod 644 `find . -name "*.h" -perm /111 -print`
-chmod 644 `find . -name "*.ggo" -perm /111 -print`
+find . -name '*.c' -exec chmod 644 {} ';'
+find . -name '*.cc' -exec chmod 644 {} ';'
+find . -name '*.cpp' -exec chmod 644 {} ';'
+find . -name '*.h' -exec chmod 644 {} ';'
+find . -name '*.ggo' -exec chmod 644 {} ';'
 
 %build
 %configure --docdir=%{_docdir}/%{name}-%{version}
