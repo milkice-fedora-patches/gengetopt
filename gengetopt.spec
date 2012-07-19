@@ -1,7 +1,7 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
 Version:	2.22.5
-Release:	1%{dist}
+Release:	2%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
@@ -85,6 +85,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Sat May  5 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.22.5-1
 - Update to 2.22.5-1 to fix FTBFS
 - valgrind supported on ARM too
