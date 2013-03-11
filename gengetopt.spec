@@ -1,7 +1,7 @@
 Summary:	Tool to write command line option parsing code for C programs
 Name:		gengetopt
 Version:	2.22.5
-Release:	3%{dist}
+Release:	4%{dist}
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/gengetopt/
@@ -13,6 +13,8 @@ Requires(preun): info
 %ifarch %{ix86} x86_64 ppc ppc64 %{arm}
 BuildRequires:	valgrind
 %endif
+
+BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %description
 Gengetopt is a tool to generate C code to parse the command line arguments
@@ -61,6 +63,9 @@ popd
 %check
 make check
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
 
@@ -85,6 +90,9 @@ fi
 %{_datadir}/%{name}/gnugetopt.h
 
 %changelog
+* Mon Mar 11 2013 Andy Grimm - 2.22.5-4
+- Add back BuildRoot for EL5
+
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
