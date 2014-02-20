@@ -1,18 +1,15 @@
-Summary:	Tool to write command line option parsing code for C programs
-Name:		gengetopt
-Version:	2.22.5
-Release:	4%{dist}
-License:	GPLv3+
-Group:		Development/Tools
-URL:		http://www.gnu.org/software/gengetopt/
-Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
-
-Requires(post):	info
-Requires(preun): info
-
+Name:             gengetopt
+Version:          2.22.6
+Release:          1%{dist}
+Summary:          Tool to write command line option parsing code for C programs
+License:          GPLv3+
+URL:              http://www.gnu.org/software/gengetopt/
+Source0:          ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 %ifarch %{ix86} x86_64 ppc ppc64 %{arm}
-BuildRequires:	valgrind
+BuildRequires:    valgrind
 %endif
+Requires(post):	  info
+Requires(preun):  info
 
 %description
 Gengetopt is a tool to generate C code to parse the command line arguments
@@ -42,14 +39,12 @@ find . -name '*.h' -exec chmod 644 {} ';'
 find . -name '*.ggo' -exec chmod 644 {} ';'
 
 %build
-%configure --docdir=%{_docdir}/%{name}-%{version}
-
-make
+%configure
+make %{?_smp_mflags}
 
 %install
-make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
-
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+make install INSTALL="%{__install} -p" DESTDIR=%{buildroot}
+rm -f %{buildroot}%{_infodir}/dir
 
 mkdir ./examples
 pushd ./doc
@@ -62,29 +57,26 @@ popd
 make check
 
 %post
-/sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
+install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
 
 %preun
 if [ $1 = 0 ]; then
-  /sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
+  install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
 fi
 
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING LICENSE NEWS README THANKS TODO
-%doc doc/index.html
-%doc doc/%{name}.html
-%doc examples
-%doc %{_infodir}/%{name}.info*
-%doc %{_mandir}/man1/%{name}.1*
+%doc doc/index.html doc/%{name}.html
+%doc examples/
+%{_infodir}/%{name}.info*
+%{_mandir}/man1/%{name}.1*
 %{_bindir}/%{name}
-
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/getopt.c
-%{_datadir}/%{name}/getopt1.c
-%{_datadir}/%{name}/gnugetopt.h
+%{_datadir}/%{name}/
 
 %changelog
+* Thu Feb 20 2014 Christopher Meng <rpm@cicku.me> - 2.22.6-1
+- Update to 2.22.6
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
@@ -155,10 +147,10 @@ fi
 - Parallel build problems fixed by upstream.
 - README.example added by upstream.
 
-* Mon Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.20-1
+* Tue Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.20-1
 - Version bump to 2.20.
 
-* Mon Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.19.1-3
+* Tue Jun 12 2007 Debarshi Ray <rishi@fedoraproject.org> - 2.19.1-3
 - Added 'BuildRequires: ...' for check stanza.
 - Added a check stanza.
 - Removed -devel package.
