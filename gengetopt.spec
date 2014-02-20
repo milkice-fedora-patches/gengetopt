@@ -10,6 +10,7 @@ BuildRequires:    valgrind
 %endif
 Requires(post):	  info
 Requires(preun):  info
+Provides:         bundled(gnulib)
 
 %description
 Gengetopt is a tool to generate C code to parse the command line arguments
@@ -40,7 +41,8 @@ find . -name '*.ggo' -exec chmod 644 {} ';'
 
 %build
 %configure
-make %{?_smp_mflags}
+# Parallel build doesn't work.
+make
 
 %install
 make install INSTALL="%{__install} -p" DESTDIR=%{buildroot}
