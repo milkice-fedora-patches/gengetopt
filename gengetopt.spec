@@ -47,6 +47,8 @@ make
 %install
 make install INSTALL="%{__install} -p" DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_infodir}/dir
+# Use %%doc macro to install instead.
+rm -f %{buildroot}%{_docdir}/%{name}
 
 mkdir ./examples
 pushd ./doc
