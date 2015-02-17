@@ -45,10 +45,10 @@ find . -name '*.ggo' -exec chmod 644 {} ';'
 make
 
 %install
-make install INSTALL="%{__install} -p" DESTDIR=%{buildroot}
-rm -rfv %{buildroot}%{_infodir}/dir
+%make_install INSTALL="%{__install} -p"
+rm -frv %{buildroot}%{_infodir}/dir
 # Use %%doc macro to install instead.
-rm -rfv %{buildroot}%{_docdir}/%{name}
+rm -frv %{buildroot}%{_docdir}/%{name}
 
 mkdir ./examples
 pushd ./doc
@@ -69,13 +69,14 @@ if [ $1 = 0 ]; then
 fi
 
 %files
-%doc AUTHORS ChangeLog COPYING LICENSE NEWS README THANKS TODO
+%doc AUTHORS ChangeLog NEWS README THANKS TODO
 %doc doc/index.html doc/%{name}.html
 %doc examples/
-%{_infodir}/%{name}.info*
-%{_mandir}/man1/%{name}.1*
+%license COPYING LICENSE
 %{_bindir}/%{name}
 %{_datadir}/%{name}/
+%{_infodir}/%{name}.info*
+%{_mandir}/man1/%{name}.1*
 
 %changelog
 * Sat Aug 16 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.6-3
