@@ -1,11 +1,11 @@
 Name:             gengetopt
 Version:          2.22.6
-Release:          5%{dist}
+Release:          6%{dist}
 Summary:          Tool to write command line option parsing code for C programs
 License:          GPLv3+
 URL:              http://www.gnu.org/software/gengetopt/
 Source0:          ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
-%ifarch %{ix86} x86_64 ppc ppc64 %{arm}
+%ifnarch s390
 BuildRequires:    valgrind
 %endif
 Requires(post):	  info
@@ -79,6 +79,9 @@ fi
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Mon Aug 24 2015 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 2.22.6-6
+- Valgrind is not available only on s/390
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.22.6-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
