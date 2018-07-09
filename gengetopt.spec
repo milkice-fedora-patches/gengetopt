@@ -6,6 +6,7 @@ License:          GPLv3+
 URL:              http://www.gnu.org/software/gengetopt/
 Source0:          ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 %ifnarch s390
+BuildRequires:  gcc
 BuildRequires:    valgrind
 %endif
 Requires(post):	  info
