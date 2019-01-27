@@ -62,14 +62,6 @@ popd
 %check
 make check
 
-%post
-install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
-
-%preun
-if [ $1 = 0 ]; then
-  install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
-fi
-
 %files
 %doc AUTHORS ChangeLog NEWS README THANKS TODO
 %doc doc/index.html doc/%{name}.html
