@@ -1,6 +1,6 @@
 Name:             gengetopt
 Version:          2.22.6
-Release:          13%{dist}
+Release:          14%{dist}
 Summary:          Tool to write command line option parsing code for C programs
 License:          GPLv3+
 URL:              http://www.gnu.org/software/gengetopt/
@@ -10,8 +10,6 @@ BuildRequires:  gcc-c++
 BuildRequires:  gcc
 BuildRequires:    valgrind
 %endif
-Requires(post):	  info
-Requires(preun):  info
 Provides:         bundled(gnulib)
 
 %description
@@ -73,6 +71,9 @@ make check
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Thu Mar  7 2019 Tim Landscheidt <tim@tim-landscheidt.de> - 2.22.6-14%{dist}
+- Remove obsolete requirements for %%post/%%preun scriptlets
+
 * Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.22.6-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
