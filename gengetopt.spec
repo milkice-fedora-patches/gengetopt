@@ -5,11 +5,11 @@ Summary:          Tool to write command line option parsing code for C programs
 License:          GPLv3+
 URL:              http://www.gnu.org/software/gengetopt/
 Source0:          ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.xz
-%ifnarch s390
+
 BuildRequires:  gcc-c++
 BuildRequires:  gcc
-BuildRequires:    valgrind
-%endif
+BuildRequires:  valgrind
+BuildRequires:  texinfo
 Provides:         bundled(gnulib)
 
 %description
