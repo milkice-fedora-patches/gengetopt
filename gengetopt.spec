@@ -67,7 +67,7 @@ make check
 %license COPYING LICENSE
 %{_bindir}/%{name}
 %{_datadir}/%{name}/
-%{_infodir}/%{name}.info*
+%{_infodir}/*.info*
 %{_mandir}/man1/%{name}.1*
 
 %changelog
