@@ -1,6 +1,6 @@
 Name:             gengetopt
 Version:          2.23
-Release:          6%{dist}
+Release:          7%{dist}
 Summary:          Tool to write command line option parsing code for C programs
 License:          GPLv3+
 URL:              http://www.gnu.org/software/gengetopt/
@@ -8,7 +8,9 @@ Source0:          ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.xz
 
 BuildRequires:  gcc-c++
 BuildRequires:  gcc
+%ifarch %{valgrind_arches}
 BuildRequires:  valgrind
+%endif
 BuildRequires:  texinfo
 BuildRequires: make
 Provides:         bundled(gnulib)
@@ -72,6 +74,9 @@ make check
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Wed Jun 01 2022 Milkice Qiu <milkice@milkice.me> - 2.23-7
+- Use %valgrind_arches for valgrind BR
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.23-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
